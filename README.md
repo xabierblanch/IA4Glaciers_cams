@@ -1,6 +1,8 @@
 # IA4Glaciers Installation Guide
 Follow the steps below to set up the IA4Glaciers project on your Raspberry Pi.
-Create an RPi image with WI-FI and SSH enabled
+Create an RPi image:
+- [ ] WI-FI enabled
+- [ ] SSH enabled
 
 
 ### 1. Download the Installation Script
