@@ -9,7 +9,7 @@ Create an RPi image:
 To begin the installation process, download the installation script by running the following command:
 
 ```bash
-wget https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/instalation.sh
+wget https://raw.githubusercontent.com/xabierblanch/IA4Glaciers_cams/refs/heads/main/install_AI4G.sh
 ```
 ```bash
 sh installation.sh
