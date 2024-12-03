@@ -52,6 +52,8 @@ echo "Upgrading required Python libraries..."
 pip install --upgrade RPi.GPIO
 pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
 pip install --upgrade sh
+pip install --upgrade astral
+pip install --pupgrade pytz
 
 # Check if the IA4Glaciers.sh script exists in the directory and give it executable permissions
 echo "Checking if IA4Glaciers.sh exists..."
@@ -99,6 +101,7 @@ wget -O $SCRIPTS_DIR/2_RGB_images.py https://github.com/xabierblanch/IA4Glaciers
 wget -O $SCRIPTS_DIR/3_TIR_Images.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/3_TIR_Images.py
 wget -O $SCRIPTS_DIR/4_GDrive.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/4_GDrive.py
 wget -O $SCRIPTS_DIR/5_shutdown.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/5_shutdown.py
+wget -O $SCRIPTS_DIR/0_day_night.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/0_day_night.py
 
 # Download additional files related to Witty Pi scheduling
 echo "Downloading Witty Pi scheduling files..."
@@ -128,7 +131,6 @@ echo "Removing unnecessary packages and cleaning up temporary files..."
 sudo apt autoremove -y
 sudo apt clean
 
-rm $HOME/install_AI4G.sh
 # Final message indicating the installation is complete
 echo "Installation completed successfully!"
 
