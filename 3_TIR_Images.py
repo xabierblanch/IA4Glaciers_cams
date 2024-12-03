@@ -47,6 +47,7 @@ def create_subfolder():
         
 def capture_thermal_images(path_tir):
     _print('Starting thermal camera data capture')
+    time.sleep(1)
     os.system('sudo ' + thermalExe + ' ' + path_tir + '/ ' + str(10) + '  ' + f'{ID}_{datetime_name}_')
     time.sleep(1)
     _print('Thermal images captured')

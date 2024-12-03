@@ -34,6 +34,7 @@ dtype = args.filetype
 SCOPES = ['https://www.googleapis.com/auth/drive']
 TOKEN_PATH = "/home/pi/scripts/token.json"
 CREDENTIALS_PATH = "/home/pi/scripts/credentials.json"
+USB_PATH = os.path.join(BASE_PATH, "usb_stick")
 
 def _print(message):
     current_time = datetime.now()
@@ -135,7 +136,8 @@ def google_upload(creds, parent):
             file_metadata = {"parents": parent, "name":  file}            
             try:
                 file_gdrive = resumable_upload(service, file_path, file_metadata)
-                backup_copy(file_gdrive, file, file_path, path_backup)
+                #backup_copy(file_gdrive, file, file_path, path_backup)
+                delete_uploaded_file(file_gdrive, file, file_path)
             except Exception as e:
                 _print(f"Critical error while uploading {file_path}: {e}")
     except:
@@ -191,6 +193,18 @@ def upload_logs(creds, parent, log):
         _print(f"ERROR: Not {os.path.basename(log)} uploaded")
         _print(f"ERROR: {e}")
 
+def delete_uploaded_file(file_gdrive, file, file_path):
+    usb_file = os.path.join(USB_PATH, file)
+    try:
+        if file_gdrive and file_gdrive.get("id"):
+            os.remove(usb_file)
+            _print(f"File {os.path.basename(file)} removed from USB stick")
+            os.remove(file_path)
+            _print(f"File {os.path.basename(file)} removed from main folder")
+        else:
+            _print(f'Comprovation in GDrive failed: {os.path.basename(file_path)} will remain on USB stick')
+    except Exception as e:
+        _print(f"ERROR: {file}: {e}")
         
 if __name__ == "__main__":
     try:

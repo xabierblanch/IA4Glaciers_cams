@@ -43,7 +43,7 @@ gphoto2_SD_Transfer = ["--get-all-files"]
 def _print(message):
     current_time = datetime.now()
     formatted_time = current_time.strftime("[%d/%m/%Y - %H:%M:%S]")
-    print(f"{formatted_time} :: gPhoto2_images :: {message}")
+    print(f"{formatted_time} :: RGB_images :: {message}")
 
 def control_relay(mode):
     try:
@@ -146,7 +146,7 @@ def rename_files():
             count = count + 1
 
 def sync_folder():
-    files = glob.glob(os.path.join(path_filetransfer_tir, "*.zip"))
+    files = glob.glob(os.path.join(path_filetransfer_rgb, "*.jpg"))
     try:
         existing_files = set(os.listdir(mount_point))        
         for file in files:

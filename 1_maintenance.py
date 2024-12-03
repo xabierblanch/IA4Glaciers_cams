@@ -16,6 +16,7 @@ from datetime import datetime
 import argparse
 import glob
 import shutil
+import subprocess
 
 parser = argparse.ArgumentParser(description='Maintenance script to clean and remove files.')
 parser.add_argument('--id', type=str, required=True, help='ID for the system')
@@ -56,31 +57,6 @@ def create_folders(path):
     except Exception as e:
         _print(f"ERROR creating folder {os.path.basename(path)}: {e}")   
     
-def clean_old_files(path):
-    if not os.path.exists(path):
-        _print(f"ERROR: {path} does not exist.")
-        return
-        
-    if not any(os.scandir(path)):
-        _print(f'Clean Backup: No files in the {os.path.basename(path)}')   
-    else:
-        _print(f'Clean Backup: There are {len(os.listdir(path))} images in {os.path.basename(path)}')
-        date_time = time.time()
-        deleted_images = 0
-        for file in os.listdir(path):
-            date_file = os.path.getmtime(os.path.join(path, file))
-            if ((date_time - date_file)/(24*3600))>= day_threshold:
-                try:
-                    os.unlink(os.path.join(path, file))
-                    _print(f"Clean Backup: File {file} deleted successfully")
-                except Exception as e:
-                    _print(f"ERROR deleting {file}: {e}")
-                deleted_images = deleted_images + 1
-        if deleted_images == 0:
-            _print(f'Clean Backup: No images older than {day_threshold} days. No backup folder cleanning')
-        else:
-            _print(f'Clean Backup: {deleted_images} images deleted because are older than {day_threshold}')
-            
 def list_clean_img(path):
     if not os.path.exists(path):
         _print(f"ERROR: {path} does not exist.")
@@ -127,7 +103,7 @@ def backup_and_clear_log(log_path, datestamp, current_datestamp):
             try:
                 shutil.copy(log_path, backup_path)
                 _print(f"Logs: Backup done. Removing source log file to restart the content")
-                os.remove(log_path)
+                subprocess.check_call(['sudo', 'rm', log_path])
                 _print(f"Logs: {os.path.basename(log_path)} has been deleted")
             except Exception as e:
                 _print(f"ERROR: Failed to back up log file {log_path}. {e}")
@@ -146,7 +122,9 @@ def mount_usb():
         device = output.decode().split("\n")[1].split(" ")[0]
         if device:
             try:
+                subprocess.run(['sudo', 'systemctl', 'daemon-reload'])
                 subprocess.check_call(['sudo', 'mount', '-o', 'uid=pi,gid=pi', f'/dev/{device}', mount_point])
+                #subprocess.check_call(['sudo', 'mount', mount_point])
                 _print(f"USB mounted in {mount_point}")
                 return device, mount_point
                 
@@ -168,21 +146,17 @@ if __name__ == "__main__":
             _print("ERROR: USB not mounted")
             
         create_folders(path_filetransfer_rgb)
-        create_folders(path_backup_rgb)
-        create_folders(path_logs_backup)
-        clean_old_files(path_backup_rgb)       
+        create_folders(path_logs_backup)      
         list_clean_img(path_filetransfer_rgb)
 
         if thermal_arg.lower() == 'true':
             _print('Thermal Camera module enabled: TIR Actions will be performed')
             create_folders(path_filetransfer_tir)
-            create_folders(path_backup_tir)
             list_clean_img(path_filetransfer_tir)
-            clean_old_files(path_backup_tir)
 
         delete_flags()
         datestamp, current_datestamp = check_month()
-        backup_and_clear_log('/home/pi/IA4G.log', datestamp, current_datestamp)
+        backup_and_clear_log('/home/pi/AI4G.log', datestamp, current_datestamp)
         backup_and_clear_log('/home/pi/wittypi/wittyPi.log', datestamp, current_datestamp)
         backup_and_clear_log('/home/pi/wittypi/schedule.log', datestamp, current_datestamp)
 

@@ -14,8 +14,17 @@ import RPi.GPIO as GPIO
 import os
 import argparse
 import time
-
+import subprocess
 FLAG_FILE = "/home/pi/1.flag"
+
+def unmount_usb(mount_point):
+    try:
+        subprocess.run(['sudo', 'umount', mount_point], check=True)
+        print(f"Successfully unmounted the USB from {mount_point}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error while unmounting the USB: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def _print(message):
     current_time = datetime.now()
@@ -49,6 +58,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Shutdown script with optional force mode")
     parser.add_argument("--force", action="store_true", help="Force shutdown even in maintenance mode")
     args = parser.parse_args()
+    unmount_usb('/home/pi/usb_stick')
 
     if args.force:
         _print("--force command recieved. Shutdown will be forced now")
