@@ -17,19 +17,19 @@ import time
 import subprocess
 FLAG_FILE = "/home/pi/1.flag"
 
-def unmount_usb(mount_point):
-    try:
-        subprocess.run(['sudo', 'umount', mount_point], check=True)
-        print(f"Successfully unmounted the USB from {mount_point}")
-    except subprocess.CalledProcessError as e:
-        print(f"Error while unmounting the USB: {e}")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-
 def _print(message):
     current_time = datetime.now()
     formatted_time = current_time.strftime("[%d/%m/%Y - %H:%M:%S]")
     print(f"{formatted_time} :: Shutdown :: {message}")
+
+def unmount_usb(mount_point):
+    try:
+        subprocess.run(['sudo', 'umount', mount_point], check=True)
+        _print(f"USB successfully unmounted from {mount_point}")
+    except subprocess.CalledProcessError as e:
+        _print(f"Error while unmounting the USB: {e}")
+    except Exception as e:
+        _print(f"An unexpected error occurred: {e}")
 
 def is_maintenance_mode():
     if os.path.exists(FLAG_FILE):
