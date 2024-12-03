@@ -1,0 +1,45 @@
+# Try to turn on your Raspberry Pi every hour sharp.
+# This script doesn't schedule the shutdown, which is supposed to be done externally.
+# You can shutdown your Raspberry Pi with your program just after finishing the job.
+#
+# [Tips]
+# Although the ON state is marked as 1 minute, its actual duration may vary.
+# The OFF state will end exactly 60 minutes after your RPi gets turned on.
+
+BEGIN 2024-12-01 09:00:00
+END   2034-12-01 09:00:00
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    M55
+OFF   M5
+ON    H7 M55
+OFF   M5
+
