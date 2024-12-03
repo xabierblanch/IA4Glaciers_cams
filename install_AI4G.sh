@@ -8,6 +8,8 @@ sudo apt update && sudo apt upgrade -y
 BASE_DIR="$HOME"
 SCRIPTS_DIR="$BASE_DIR/scripts"
 
+mkdir $SCRIPTS_DIR
+
 # Change to the base directory
 echo "Changing directory to $BASE_DIR..."
 cd $BASE_DIR
@@ -55,15 +57,6 @@ pip install --upgrade sh
 pip install --upgrade astral
 pip install --pupgrade pytz
 
-# Check if the IA4Glaciers.sh script exists in the directory and give it executable permissions
-echo "Checking if IA4Glaciers.sh exists..."
-if [ -f $SCRIPTS_DIR/IA4Glaciers.sh ]; then
-    echo "Setting executable permissions for IA4Glaciers.sh..."
-    chmod +x $SCRIPTS_DIR/IA4Glaciers.sh
-else
-    echo "The script IA4Glaciers.sh does not exist in $SCRIPTS_DIR. Please check."
-fi
-
 # Download the i3system SDK installer and give it executable permissions
 echo "Downloading i3system SDK installer..."
 wget https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/i3system_sdk_aarch64.run
@@ -102,6 +95,16 @@ wget -O $SCRIPTS_DIR/3_TIR_Images.py https://github.com/xabierblanch/IA4Glaciers
 wget -O $SCRIPTS_DIR/4_GDrive.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/4_GDrive.py
 wget -O $SCRIPTS_DIR/5_shutdown.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/5_shutdown.py
 wget -O $SCRIPTS_DIR/0_day_night.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/0_day_night.py
+wget -O $SCRIPTS_DIR/IA4Glaciers.sh https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4Glaciers.sh
+
+# Check if the IA4Glaciers.sh script exists in the directory and give it executable permissions
+echo "Checking if IA4Glaciers.sh exists..."
+if [ -f $SCRIPTS_DIR/IA4Glaciers.sh ]; then
+    echo "Setting executable permissions for IA4Glaciers.sh..."
+    chmod +x $SCRIPTS_DIR/IA4Glaciers.sh
+else
+    echo "The script IA4Glaciers.sh does not exist in $SCRIPTS_DIR. Please check."
+fi
 
 # Download additional files related to Witty Pi scheduling
 echo "Downloading Witty Pi scheduling files..."
