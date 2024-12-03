@@ -95,7 +95,7 @@ wget -O $SCRIPTS_DIR/3_TIR_Images.py https://github.com/xabierblanch/IA4Glaciers
 wget -O $SCRIPTS_DIR/4_GDrive.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/4_GDrive.py
 wget -O $SCRIPTS_DIR/5_shutdown.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/5_shutdown.py
 wget -O $SCRIPTS_DIR/0_day_night.py https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/0_day_night.py
-wget -O $SCRIPTS_DIR/IA4Glaciers.sh https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4Glaciers.sh
+wget -O $SCRIPTS_DIR/IA4Glaciers.sh https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/AI4Glaciers.sh
 
 # Check if the IA4Glaciers.sh script exists in the directory and give it executable permissions
 echo "Checking if IA4Glaciers.sh exists..."
