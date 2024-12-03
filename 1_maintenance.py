@@ -29,6 +29,7 @@ ID = args.id
 day_threshold = args.backup
 thermal_arg = args.thermal
 path_filetransfer_rgb = os.path.join(BASE_PATH, f"{ID}_RGB_filetransfer")
+path_filetransfer_temp = os.path.join(BASE_PATH, f"{ID}_TEMP_filetransfer")
 path_backup_rgb = os.path.join(BASE_PATH, f"{ID}_RGB_backup")
 path_filetransfer_tir = os.path.join(BASE_PATH, f"{ID}_TIR_filetransfer")
 path_backup_tir = os.path.join(BASE_PATH, f"{ID}_TIR_backup")
@@ -122,7 +123,7 @@ def mount_usb():
         device = output.decode().split("\n")[1].split(" ")[0]
         if device:
             try:
-                subprocess.run(['sudo', 'systemctl', 'daemon-reload'])
+                #subprocess.run(['sudo', 'systemctl', 'daemon-reload'])
                 subprocess.check_call(['sudo', 'mount', '-o', 'uid=pi,gid=pi', f'/dev/{device}', mount_point])
                 #subprocess.check_call(['sudo', 'mount', mount_point])
                 _print(f"USB mounted in {mount_point}")
@@ -152,6 +153,7 @@ if __name__ == "__main__":
         if thermal_arg.lower() == 'true':
             _print('Thermal Camera module enabled: TIR Actions will be performed')
             create_folders(path_filetransfer_tir)
+            create_folders(path_filetransfer_temp)
             list_clean_img(path_filetransfer_tir)
 
         delete_flags()

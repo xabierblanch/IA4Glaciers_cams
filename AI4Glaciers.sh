@@ -22,17 +22,16 @@ else
     exit 1
 fi
 
-sleep 4 #Wait time until WittyPi set the right time to the RasPi
-
-current_time=$(date +"%d/%m/%Y - %H:%M:%S")
-current_hour=$(date +"%H")
-current_minute=$(date +"%M")
+sleep 5 #Wait time until WittyPi set the right time to the RasPi
 
 #current_minute=$(date +"%M")
 echo "$(get_current_time) :: ******************************************" >> "$log_file"
 echo "$(get_current_time) :: IA4Glaciers :: New instance started: ID = $ID" >> "$log_file"
 
 TIME_OF_DAY=$(python3 /home/pi/scripts/0_day_night.py)
+
+current_time=$(date +"%d/%m/%Y - %H:%M:%S")
+current_hour=$(date +"%H")
 
 if [ "$TIME_OF_DAY" = "night" ]; then
     echo "$(get_current_time) :: IA4Glaciers :: Current time ($current_hour UTC) is in night range" >> "$log_file"
@@ -48,12 +47,14 @@ else
 	rgb=true
 fi
 
+current_minute=$(date +"%M")
+
 if [ "$current_minute" = "00" ] || [ "$current_minute" = "01" ] || [ "$current_minute" = "02" ] || [ "$current_minute" = "03" ] || [ "$current_minute" = "30" ] || [ "$current_minute" = "31" ] || [ "$current_minute" = "32" ] || [ "$current_minute" = "33" ]; then 
-    echo "$(get_current_time) :: IA4Glaciers :: Started at RGB minute: Images will be taken" >> "$log_file"
-	capture_images=true
+    echo "$(get_current_time) :: IA4Glaciers :: Started at RGB minute ($current_minute): Images will be taken" >> "$log_file"
+    capture_images=true
 else
-    echo "$(get_current_time) :: IA4Glaciers :: Started at a maintenance minute. No images will be captured" >> "$log_file"
-	maintenance=true
+    echo "$(get_current_time) :: IA4Glaciers :: Started at a maintenance minute ($current_minute). No images will be captured" >> "$log_file"
+    maintenance=true
 fi
 
 sleep 1
@@ -69,6 +70,7 @@ fi
 
 if [ "$capture_images" = true ] && [ "$thermal" = true ]; then
 	echo "$(get_current_time) :: IA4Glaciers :: Thermal Camera module active" >> "$log_file"
+	sudo dtoverlay w1-gpio gpiopin=27 pullup=0
 	python3 /home/pi/scripts/3_TIR_Images.py --id="$ID" >> "$log_file"
 fi
 
@@ -102,6 +104,7 @@ if [ "$internet" = true ]; then
     sleep 1
 	if [ "$thermal" = true ]; then
 		python3 /home/pi/scripts/4_GDrive.py --id="$ID" --filetype=TIR >> "$log_file"
+		python3 /home/pi/scripts/4_GDrive.py --id="$ID" --filetype=TXT >> "$log_file"
 	fi
 	sleep 1
 	python3 /home/pi/scripts/4_GDrive.py --id="$ID" --filetype=LOG >> "$log_file"

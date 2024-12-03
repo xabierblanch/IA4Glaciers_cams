@@ -37,7 +37,7 @@ int main(int argc, char* argv[])	//argv is count of arguments plus current exec 
     int countFrames = 0;
     int nbrFramesToSkip = 30;
     bool FileNew = 0;
-    int nbrCapturedFrames = 10;
+    int nbrCapturedFrames = 4;
     
     string outDirectory = "/home/pi/thermalcamera/thermal_images/";
 	string filePrefix = "default_prefix";
@@ -278,7 +278,7 @@ int main(int argc, char* argv[])	//argv is count of arguments plus current exec 
                 
             // Close Device
             pTE->CloseTE();
-			_print("Image capture completed. Total images: " + std::to_string(countFrames));
+			_print("C++ Process finished successfully -> Back to .py code");
             //cout << "Close Usb" << endl;
         }
         else{
@@ -291,7 +291,7 @@ int main(int argc, char* argv[])	//argv is count of arguments plus current exec 
 		_print("ERROR: Device not connected");
     }
     return 0;
-	_print("C++ Process finished successfully -> Back to .py code");
+	
 }
 // Callback function executed when TE is arrived to or removed from usb port.
 void DeviceChangedCallback(TE_STATE _in){

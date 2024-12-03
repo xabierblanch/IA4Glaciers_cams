@@ -24,7 +24,7 @@ import random
 
 parser = argparse.ArgumentParser(description='GDrive script to upload TIR images')
 parser.add_argument('--id', type=str, required=True, help='ID for the system')
-parser.add_argument('--filetype', type=str, required=True, choices=['LOG', 'RGB', 'TIR'], help='Tipo de archivo a subir (log, RGB_Images, TIR_Images)')
+parser.add_argument('--filetype', type=str, required=True, choices=['LOG', 'RGB', 'TIR', 'TXT'], help='Tipo de archivo a subir (log, RGB_Images, TIR_Images, TXT_Temp)')
 args = parser.parse_args()
 BASE_PATH = '/home/pi'
 
@@ -122,7 +122,7 @@ def google_upload(creds, parent):
     try:
         files = [f for f in os.listdir(path_filetransfer) if f.endswith(file_type)]
         if not files:
-            _print(f"No {file_type} files in the FileTransfer folder. No upload process")
+            _print(f"No {file_type} files in the FileTransfer folder")
             return
             
         _print(f'{len(files)} {file_type} files in the FileTransfer folder. The upload will start:')
@@ -136,25 +136,12 @@ def google_upload(creds, parent):
             file_metadata = {"parents": parent, "name":  file}            
             try:
                 file_gdrive = resumable_upload(service, file_path, file_metadata)
-                #backup_copy(file_gdrive, file, file_path, path_backup)
                 delete_uploaded_file(file_gdrive, file, file_path)
             except Exception as e:
                 _print(f"Critical error while uploading {file_path}: {e}")
     except:
         _print("Error")     
                 
-def backup_copy(file_gdrive, file, file_path, path_backup):
-    try:
-        if file_gdrive and file_gdrive.get("id"):
-            backup_path = os.path.join(path_backup, file)
-            os.replace(file_path, backup_path)
-            _print(f'{file} saved in the backup folder')
-        else:
-            _print(f'Comprovation in GDrive failed: {os.path.basename(file_path)} will remain on main folder')
-    
-    except Exception as e:
-        _print(f"ERROR during backup process for file {file}: {e}")
-
 def upload_logs_core(creds, file_path, new_name, parent):
     try:
         service = build("drive", "v3", credentials=creds)
@@ -213,16 +200,20 @@ if __name__ == "__main__":
          
         if dtype.lower() == 'rgb':
             path_filetransfer = os.path.join(BASE_PATH, f"{ID}_RGB_filetransfer")
-            path_backup = os.path.join(BASE_PATH, f"{ID}_RGB_backup")
             file_type = ".jpg"
             mime_type="image/jpg"
             google_upload(creds, parent)      
         
         elif dtype.lower() == 'tir':
             path_filetransfer = os.path.join(BASE_PATH, f"{ID}_TIR_filetransfer")
-            path_backup = os.path.join(BASE_PATH, f"{ID}_TIR_backup")
             file_type = ".zip"
             mime_type="application/zip"
+            google_upload(creds, parent)
+        
+        elif dtype.lower() == 'txt':
+            path_filetransfer = os.path.join(BASE_PATH, f"{ID}_TEMP_filetransfer")
+            file_type = ".txt"
+            mime_type="text/plain"
             google_upload(creds, parent)
         
         elif dtype.lower() == 'log':
