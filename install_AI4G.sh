@@ -109,6 +109,12 @@ fi
 # Download additional files related to Witty Pi scheduling
 echo "Downloading Witty Pi scheduling files..."
 wget -O $BASE_DIR/wittypi/schedules/IA4G.wpi https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4G.wpi
+wget -O $BASE_DIR/wittypi/schedules/IA4G_1H.wpi https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4G_1H.wpi
+wget -O $BASE_DIR/wittypi/schedules/IA4G_1H_TIR.wpi https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4G_1H_TIR.wpi
+wget -O $BASE_DIR/wittypi/schedules/IA4G_2H.wpi https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4G_2H.wpi
+wget -O $BASE_DIR/wittypi/schedules/IA4G_2H_TIR.wpi https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4G_2H_TIR.wpi
+wget -O $BASE_DIR/wittypi/schedules/IA4G_30M.wpi https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4G_30M.wpi
+wget -O $BASE_DIR/wittypi/schedules/IA4G_30M_TIR.wpi https://github.com/xabierblanch/IA4Glaciers_cams/raw/refs/heads/main/IA4G_30M_TIR.wpi
 
 # Restore the crontab from the backup file and enable the cron service
 echo "Restoring crontab from backup and enabling cron service..."
