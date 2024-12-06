@@ -17,6 +17,7 @@ from datetime import datetime
 import subprocess
 import shutil
 import glob
+from pathlib import Path
 
 parser = argparse.ArgumentParser(description='TIR script to capture thermal images')
 parser.add_argument('--id', type=str, required=True, help='ID for the system')
@@ -52,8 +53,10 @@ def create_subfolder():
         _print(f"ERROR creating subfolder: {e}")
         
 def capture_thermal_images(path_tir):
-    os.system('sudo ' + thermalExe + ' ' + path_tir + '/ ' + str(10) + '  ' + f'{ID}_{datetime_name}_')
-    _print('Thermal images captured')
+    try:
+        os.system('sudo ' + thermalExe + ' ' + path_tir + '/ ' + str(10) + '  ' + f'{ID}_{datetime_name}_')
+    except:
+        __print('ERROR executing C++ code')
 
 def create_zip(datetime_name, path_tir):
     try:
@@ -115,7 +118,7 @@ def writeToFile(path_filetransfer_temp, datetime_folder):
         writer = csv.writer(writeTemp)
         writer.writerow(['date', 'device', 'temperature'])
         writeTemp.flush()
-        __print(f"Temperature file {filename} created in {path_filetransfer_temp} folder")
+        __print(f"Temperature file {filename} created in {os.path.basename(path_filetransfer_temp)} folder")
     except:
         __print(f"ERROR: Temperature file can't be created")
     return writer, writeTemp, filename
@@ -126,7 +129,7 @@ if __name__ == "__main__":
         capture_thermal_images(path_tir)     
         writer, writeTemp, filename = writeToFile(path_filetransfer_temp, datetime_folder)       
         for sensor in glob.glob("/sys/bus/w1/devices/28-*/w1_slave"):
-            __print(f"Temp sensor {sensor} identified: Measuring temperatures")
+            __print(f"Temp sensor {Path(sensor).parent.name} identified: Measuring temperatures")
             try:
                 for i in range(ite):
                     now = datetime.now()

@@ -136,7 +136,7 @@ def capture_image():
 
 def rename_files():
     now = datetime.now()
-    timestamp = now.strftime("%Y%m%d_%H%M")
+    timestamp = now.strftime("%y%m%d_%H%M")
     count = 1
     for file in os.listdir(path_filetransfer_rgb):
         if len(file) < 15:

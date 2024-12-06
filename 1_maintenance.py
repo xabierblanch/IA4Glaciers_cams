@@ -20,7 +20,7 @@ import subprocess
 
 parser = argparse.ArgumentParser(description='Maintenance script to clean and remove files.')
 parser.add_argument('--id', type=str, required=True, help='ID for the system')
-parser.add_argument('--backup', type=int, default=30, help='Threshold in days for backup file deletion')
+parser.add_argument('--backup', type=int, default=5, help='Threshold in days for backup file deletion')
 parser.add_argument('--thermal', type=str, default='false', help='Thermal camera?')
 args = parser.parse_args()
 BASE_PATH = '/home/pi'
@@ -94,6 +94,30 @@ def check_month():
 
     return datestamp, current_datestamp
 
+def clean_old_files(path):
+    if not os.path.exists(path):
+        _print(f"ERROR: {path} does not exist.")
+        return
+        
+    if not any(os.scandir(path)):
+        _print(f'Clean Folder: No files in the {os.path.basename(path)}')   
+    else:
+        _print(f'Clean Folder: There are {len(os.listdir(path))} images in {os.path.basename(path)}')
+        date_time = time.time()
+        deleted_images = 0
+        for file in os.listdir(path):
+            date_file = os.path.getmtime(os.path.join(path, file))
+            if ((date_time - date_file)/(24*3600))>= day_threshold:
+                try:
+                    os.unlink(os.path.join(path, file))
+                    _print(f"Clean Folder: File {file} deleted successfully")
+                except Exception as e:
+                    _print(f"ERROR deleting {file}: {e}")
+                deleted_images = deleted_images + 1
+        if deleted_images == 0:
+            _print(f'Clean Folder: No files older than {day_threshold} days. No folder cleanning')
+        else:
+            _print(f'Clean Folder: {deleted_images} images deleted because are older than {day_threshold}')
 
 def backup_and_clear_log(log_path, datestamp, current_datestamp):
     try:
@@ -149,12 +173,16 @@ if __name__ == "__main__":
         create_folders(path_filetransfer_rgb)
         create_folders(path_logs_backup)      
         list_clean_img(path_filetransfer_rgb)
+        clean_old_files(path_filetransfer_rgb)
 
         if thermal_arg.lower() == 'true':
             _print('Thermal Camera module enabled: TIR Actions will be performed')
             create_folders(path_filetransfer_tir)
             create_folders(path_filetransfer_temp)
             list_clean_img(path_filetransfer_tir)
+            clean_old_files(path_filetransfer_tir)
+            clean_old_files(path_filetransfer_temp)
+            
 
         delete_flags()
         datestamp, current_datestamp = check_month()
