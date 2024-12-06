@@ -68,7 +68,8 @@ def list_clean_img(path):
     else:
         for file in os.listdir(path):
             if file.startswith("GPM"):
-                _print(f"FileTransfer: File {file} from {os.path.basename(path)} pending to upload")
+                #_print(f"FileTransfer: File {file} from {os.path.basename(path)} pending to upload")
+                return
             else:
                 os.unlink(os.path.join(path, file))
                 _print(f"FileTransfer: File {file} in {os.path.basename(path)} is corrupted. It has been deleted")
@@ -93,6 +94,18 @@ def check_month():
         _print(f"ERROR: {e}")
 
     return datestamp, current_datestamp
+
+def check_mount(directory):
+    with open('/proc/mounts', 'r') as mounts:
+        if mount_point in mounts.read():
+            try:
+                count = sum(len(files) for _, _, files in os.walk(directory))
+            except:
+                count = -999
+            _print(f"USB mounted correctly in {mount_point} - {count} files stored")
+        else:
+            _print(f'USB not mounted correctly')  
+    return count
 
 def clean_old_files(path):
     if not os.path.exists(path):
@@ -150,7 +163,6 @@ def mount_usb():
                 #subprocess.run(['sudo', 'systemctl', 'daemon-reload'])
                 subprocess.check_call(['sudo', 'mount', '-o', 'uid=pi,gid=pi', f'/dev/{device}', mount_point])
                 #subprocess.check_call(['sudo', 'mount', mount_point])
-                _print(f"USB mounted in {mount_point}")
                 return device, mount_point
                 
             except Exception as e:
@@ -169,7 +181,7 @@ if __name__ == "__main__":
             device, mount_point = mount_usb()
         except:
             _print("ERROR: USB not mounted")
-            
+        check_mount(mount_point)                
         create_folders(path_filetransfer_rgb)
         create_folders(path_logs_backup)      
         list_clean_img(path_filetransfer_rgb)
@@ -183,7 +195,6 @@ if __name__ == "__main__":
             clean_old_files(path_filetransfer_tir)
             clean_old_files(path_filetransfer_temp)
             
-
         delete_flags()
         datestamp, current_datestamp = check_month()
         backup_and_clear_log('/home/pi/AI4G.log', datestamp, current_datestamp)

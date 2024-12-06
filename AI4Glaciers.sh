@@ -59,7 +59,7 @@ fi
 
 sleep 1
 
-python3 /home/pi/scripts/1_maintenance.py --id="$ID" --backup=30 >> "$log_file"
+python3 /home/pi/scripts/1_maintenance.py --id="$ID" --backup=5 --thermal="$thermal">> "$log_file"
 
 sleep 1
 

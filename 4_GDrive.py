@@ -182,16 +182,19 @@ def upload_logs(creds, parent, log):
 
 def delete_uploaded_file(file_gdrive, file, file_path):
     usb_file = os.path.join(USB_PATH, file)
-    try:
-        if file_gdrive and file_gdrive.get("id"):
+    if file_gdrive and file_gdrive.get("id"):
+        try:
             os.remove(usb_file)
             _print(f"File {os.path.basename(file)} removed from USB stick")
+        except:
+            _print((f"ERROR: File {os.path.basename(file)} NOT removed from USB stick")
+        try:
             os.remove(file_path)
             _print(f"File {os.path.basename(file)} removed from main folder")
-        else:
-            _print(f'Comprovation in GDrive failed: {os.path.basename(file_path)} will remain on USB stick')
-    except Exception as e:
-        _print(f"ERROR: {file}: {e}")
+        except:
+            _print(f"ERROR: File {os.path.basename(file)} NOT removed from main folder")
+    else:
+        _print(f'Comprovation in GDrive failed: {os.path.basename(file_path)} will remain on USB stick')
         
 if __name__ == "__main__":
     try:
