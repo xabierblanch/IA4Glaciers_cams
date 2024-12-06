@@ -54,7 +54,7 @@ def create_subfolder():
         
 def capture_thermal_images(path_tir):
     try:
-        os.system('sudo ' + thermalExe + ' ' + path_tir + '/ ' + str(10) + '  ' + f'{ID}_{datetime_name}_')
+        os.system('sudo ' + thermalExe + ' ' + path_tir + '/ ' + str(4) + '  ' + f'{ID}_{datetime_name}_')
     except:
         __print('ERROR executing C++ code')
 
