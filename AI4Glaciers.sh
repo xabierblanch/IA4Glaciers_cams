@@ -65,7 +65,7 @@ sleep 1
 
 if [ "$capture_images" = true ] && [ "$rgb" = true ]; then
 	echo "$(get_current_time) :: IA4Glaciers :: RGB Camera module active" >> "$log_file"
-    python3 /home/pi/scripts/2_RGB_images.py --id="$ID" --num=1 >> "$log_file"
+    python3 /home/pi/scripts/2_RGB_images.py --id="$ID" --num=2 >> "$log_file"
 fi
 
 if [ "$capture_images" = true ] && [ "$thermal" = true ]; then
