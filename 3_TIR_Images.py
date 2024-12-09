@@ -44,7 +44,7 @@ def __print(message):
 def create_subfolder():
     try:
         datetime_folder = datetime.now()
-        datetime_name = datetime_folder.strftime("%d%m%y_%H%M")
+        datetime_name = datetime_folder.strftime("%y%m%d_%H%M")
         path_tir = os.path.join(path_filetransfer_tir, f"{ID}_{datetime_name}_TIR")
         os.makedirs(path_tir, exist_ok = True)
         _print(f'Thermal images will be saved at: {os.path.basename(path_tir)}')
@@ -112,7 +112,7 @@ def temperatureDS18B20(deviceName):
 
 def writeToFile(path_filetransfer_temp, datetime_folder): 
     try:
-        timestamp = datetime_folder.strftime("%Y%m%d_%H%M")
+        timestamp = datetime_folder.strftime("%y%m%d_%H%M")
         filename = ID + "_" + timestamp + "_Temp.txt"
         writeTemp = open(os.path.join(path_filetransfer_temp, filename), 'w')
         writer = csv.writer(writeTemp)
