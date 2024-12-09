@@ -187,7 +187,7 @@ def delete_uploaded_file(file_gdrive, file, file_path):
             os.remove(usb_file)
             _print(f"File {os.path.basename(file)} removed from USB stick")
         except:
-            _print((f"ERROR: File {os.path.basename(file)} NOT removed from USB stick")
+            _print(f"ERROR: File {os.path.basename(file)} NOT removed from USB stick")
         try:
             os.remove(file_path)
             _print(f"File {os.path.basename(file)} removed from main folder")
