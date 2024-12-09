@@ -54,7 +54,7 @@ def control_relay(mode):
             _print("Camera relay activated succesfully")
             time.sleep(4)
         if mode == "down":
-            time.sleep(2)
+            time.sleep(1)
             GPIO.output(21, GPIO.LOW)
             _print("Camera relay deactivated succesfully")     
             #GPIO.cleanup()
@@ -79,7 +79,7 @@ def detect_camera():
 def time_shutter():
     while True:
         current_second = int(time.time() % 60)
-        if current_second == 40:
+        if current_second == 35:
             _print(f"Time-based shutther triggered")
             try:
                 gp(gphoto2_capture)
