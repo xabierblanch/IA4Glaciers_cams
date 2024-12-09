@@ -57,7 +57,7 @@ def control_relay(mode):
             time.sleep(2)
             GPIO.output(21, GPIO.LOW)
             _print("Camera relay deactivated succesfully")     
-            GPIO.cleanup()
+            #GPIO.cleanup()
     except Exception as e:
         _print("ERROR: Camera relay")
         _print(f"ERROR: {e}")    
