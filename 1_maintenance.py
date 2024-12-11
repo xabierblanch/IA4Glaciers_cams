@@ -96,6 +96,7 @@ def check_month():
     return datestamp, current_datestamp
 
 def check_mount(directory):
+    count = -1
     with open('/proc/mounts', 'r') as mounts:
         if mount_point in mounts.read():
             try:
