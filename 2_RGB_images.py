@@ -54,7 +54,7 @@ def control_relay(mode):
             _print("Camera relay activated succesfully")
             time.sleep(4)
         if mode == "down":
-            time.sleep(1)
+            time.sleep(3)
             GPIO.output(21, GPIO.LOW)
             _print("Camera relay deactivated succesfully")     
             #GPIO.cleanup()
@@ -117,7 +117,7 @@ def capture_image():
         return
         
     try:
-        time.sleep(1)
+        time.sleep(2)
         time_shutter()
     except Exception as e:
         _print("ERROR: Time-based shutter")
@@ -126,7 +126,7 @@ def capture_image():
 
     try:
         os.chdir(path_filetransfer_rgb)
-        time.sleep(1)
+        time.sleep(4)
         gp(gphoto2_SD_Transfer)
         _print(f"GPhoto2 - {num_of_pics} images downloaded from the camera")
     except Exception as e:
