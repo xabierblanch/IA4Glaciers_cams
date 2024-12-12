@@ -16,9 +16,9 @@ def is_day_or_night():
     sunrise = s["sunrise"]
     sunset = s["sunset"]
     
-    print(sunrise)
-    print(sunset)
-    print(now)
+    #print(sunrise)
+    #print(sunset)
+    #print(now)
     
     if sunrise.time() <= now.time() < sunset.time():
         return "day"
